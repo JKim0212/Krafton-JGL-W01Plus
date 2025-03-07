@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         activePanel = Panel.Upgrade;
+        gm = GameManager.instance;
     }
 
     // Update is called once per frame
@@ -55,5 +56,10 @@ public class UIManager : MonoBehaviour
                 Debug.Log("Incorrect Button selected");
                 break;
         }
+    }
+
+    public void NextStage(){
+        stationPanel.SetActive(false);
+        gm.StartNextStage();
     }
 }

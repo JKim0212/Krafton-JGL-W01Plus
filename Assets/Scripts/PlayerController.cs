@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed;
-    [SerializeField] Rigidbody2D playerRb;
+    [HideInInspector] public Rigidbody2D playerRb;
     [SerializeField] GameObject shooter;
     [SerializeField] Camera mainCam;
     // Update is called once per frame
@@ -27,12 +27,14 @@ public class PlayerController : MonoBehaviour
             Vector2 offset = new Vector2(mousePos.x - worldPos.x, mousePos.y - worldPos.y);
             float angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
             shooter.transform.rotation = Quaternion.Euler(0, 0, angle);
+        } else {
+            shooter.transform.rotation = Quaternion.Euler(0,0,-0);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Station"))
+        if (collision.CompareTag("Station") && gm.isPlaying)
         {
             gm.EndStage();
         }

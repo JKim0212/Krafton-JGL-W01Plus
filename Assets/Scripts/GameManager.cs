@@ -2,11 +2,12 @@ using UnityEngine;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor.UnityLinker;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+    [SerializeField] GameObject player;
     [Header("Game Stat")]
     public float health;
     [HideInInspector] public float curHealth;
@@ -17,9 +18,13 @@ public class GameManager : MonoBehaviour
     public float stationDistance;
     
     [Header("Managers")]
-    private UIManager ui;
+    [SerializeField] UIManager ui;
     [SerializeField] StationController station;
+    [SerializeField] GameObject blackBar;
     public bool isPlaying;
+
+    [Header("Progress")]
+    [SerializeField] int stageNum;
     void Awake()
     {
         if(instance == null){
@@ -44,11 +49,28 @@ public class GameManager : MonoBehaviour
 
     public void EndStage(){
         isPlaying = false;
+        blackBar.SetActive(true);
         StartCoroutine(EndStageCo());
     }
 
     IEnumerator EndStageCo(){
+
         yield return new WaitForSeconds(1.5f);
         ui.Upgrade();
+        player.SetActive(false);
+        player.transform.position = station.transform.position;
     }
+
+    public void StartNextStage(){
+       player.SetActive(true);
+       player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
+       StartCoroutine(CutScene());
+    }
+
+    IEnumerator CutScene(){
+        yield return new WaitForSeconds(3f);
+        blackBar.GetComponent<BlackBarController>().hideBar();
+    }
+
+
 }
