@@ -5,7 +5,10 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [Header("Player")]
     [SerializeField] GameObject player;
+    public Transform leftWeapon, rightWeapon;
+
     [Header("Game Stat")]
     public float health;
     [HideInInspector] public float curHealth;

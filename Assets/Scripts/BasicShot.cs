@@ -1,9 +1,26 @@
+using System.Collections;
 using UnityEngine;
 
-public class BasicShot: Weapon
+public class BasicShot : Weapon
 {
-    protected override void Shoot(){
-        Vector3 targetPos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(targetPos.ToString());
+    protected override void Shoot()
+    {
+        if (!inCoolDown)
+        {
+            inCoolDown = true;
+            Vector3 targetPos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 direction = targetPos - shotPlace.position;
+            direction.z = 0f;
+            GameObject shot = Instantiate(projectile, shotPlace.position, Quaternion.identity);
+            shot.GetComponent<Rigidbody2D>().linearVelocity = direction.normalized * projectileSpeed;
+            StartCoroutine(ShootCo());
+        }
+
+    }
+
+    IEnumerator ShootCo()
+    {
+        yield return new WaitForSeconds(attackSpeed);
+        inCoolDown = false;
     }
 }

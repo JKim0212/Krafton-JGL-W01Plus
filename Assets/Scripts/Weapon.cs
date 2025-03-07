@@ -7,11 +7,14 @@ public class Weapon : MonoBehaviour
         left,
         right
     }
-    [SerializeField] float damage, attackSpeed, projectileSpeed;
+    [SerializeField] protected float damage, attackSpeed, projectileSpeed;
     protected Camera mainCam;
     private GameManager gm;
-    WeaponSlot weaponSlot;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [HideInInspector] public WeaponSlot weaponSlot;
+    [SerializeField] protected GameObject projectile;
+    [SerializeField] protected Transform shotPlace;
+    
+    protected bool inCoolDown;
     void Start()
     {
         gm = GameManager.instance;
