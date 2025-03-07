@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("Player")]
-    [SerializeField] GameObject player;
+    public GameObject player;
     public Transform leftWeapon, rightWeapon;
 
     [Header("Game Stat")]

@@ -9,11 +9,11 @@ public class Weapon : MonoBehaviour
     }
     [SerializeField] protected float damage, attackSpeed, projectileSpeed;
     protected Camera mainCam;
-    private GameManager gm;
+    protected GameManager gm;
     [HideInInspector] public WeaponSlot weaponSlot;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected Transform shotPlace;
-    
+
     protected bool inCoolDown;
     void Start()
     {
@@ -23,23 +23,28 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (weaponSlot == WeaponSlot.left)
+        if (gm.isPlaying)
         {
-            if (Input.GetMouseButton(0))
+            if (weaponSlot == WeaponSlot.left)
             {
-                Shoot();
+                if (Input.GetMouseButton(0))
+                {
+                    Shoot();
+                }
             }
-        }
-        if (weaponSlot == WeaponSlot.right)
-        {
-            if (Input.GetMouseButton(1))
+            if (weaponSlot == WeaponSlot.right)
             {
-                Shoot();
+                if (Input.GetMouseButton(1))
+                {
+                    Shoot();
+                }
             }
         }
 
+
     }
-    protected virtual void Shoot(){
+    protected virtual void Shoot()
+    {
 
     }
 }
