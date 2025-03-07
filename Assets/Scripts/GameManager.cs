@@ -9,9 +9,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Stat")]
     public float health;
-    private float curHealth;
-    public int cash;
+    [HideInInspector] public float curHealth;
+    public int money;
     public float playerMoveSpeed;
+    public float attackSpeed;
+    public float attackDamage;
     public float stationDistance;
     
     [Header("Managers")]
@@ -29,7 +31,6 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ui = UIManager.instance;
         curHealth = health;
     }
 

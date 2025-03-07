@@ -7,7 +7,6 @@ public class UIManager : MonoBehaviour
         Upgrade,
         Weapon
     }
-    public static UIManager instance;
     private GameManager gm;
 
     [Header("Pannels")]
@@ -16,17 +15,6 @@ public class UIManager : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     void Start()
     {
         activePanel = Panel.Upgrade;
