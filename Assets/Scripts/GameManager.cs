@@ -1,8 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.UnityLinker;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,20 +14,30 @@ public class GameManager : MonoBehaviour
     public float attackSpeed;
     public float attackDamage;
     public float stationDistance;
-    
+
     [Header("Managers")]
     [SerializeField] UIManager ui;
     [SerializeField] StationController station;
+
+    [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
-    public bool isPlaying;
+    public bool isCutScene;
+
 
     [Header("Progress")]
     [SerializeField] int stageNum;
+    public bool isPlaying;
+    [SerializeField] float stationAppearTime;
+    private float time;
+    private bool locationFound = false;
     void Awake()
     {
-        if(instance == null){
+        if (instance == null)
+        {
             instance = this;
-        } else{
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }
@@ -39,21 +47,28 @@ public class GameManager : MonoBehaviour
         curHealth = health;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)){
-            station.Spawn();
+        if (isPlaying)
+        {
+            time += Time.deltaTime;
+            if (time >= stationAppearTime && !locationFound)
+            {
+                player.GetComponent<PlayerController>().pointStation(locationFound = true);
+            }
         }
-    }
 
-    public void EndStage(){
+    }
+    public void EndStage()
+    {
+        player.GetComponent<PlayerController>().pointStation(locationFound = false);
         isPlaying = false;
         blackBar.SetActive(true);
         StartCoroutine(EndStageCo());
     }
 
-    IEnumerator EndStageCo(){
+    IEnumerator EndStageCo()
+    {
 
         yield return new WaitForSeconds(1.5f);
         ui.Upgrade();
@@ -61,15 +76,32 @@ public class GameManager : MonoBehaviour
         player.transform.position = station.transform.position;
     }
 
-    public void StartNextStage(){
-       player.SetActive(true);
-       player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
-       StartCoroutine(CutScene());
+    public void StartNextStage()
+    {   
+        player.SetActive(true);
+        player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
+        player.GetComponent<PlayerController>().UpdateStats();
+        StartCoroutine(CutScene());
     }
 
-    IEnumerator CutScene(){
+    IEnumerator CutScene()
+    {
+        isCutScene = true;
         yield return new WaitForSeconds(3f);
         blackBar.GetComponent<BlackBarController>().hideBar();
+        StartCoroutine(EndCutScene());
+    }
+
+    IEnumerator EndCutScene()
+    {
+        isCutScene = false;
+        yield return new WaitForSeconds(2f);
+        station.Spawn();
+        blackBar.SetActive(false);
+        isPlaying = true;
+        player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.zero;
+        time = 0f;
+        locationFound = false;
     }
 
 

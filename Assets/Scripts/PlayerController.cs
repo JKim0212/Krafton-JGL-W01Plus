@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed;
     [HideInInspector] public Rigidbody2D playerRb;
     [SerializeField] GameObject shooter;
+    [SerializeField] GameObject stationPointer;
     [SerializeField] Camera mainCam;
     // Update is called once per frame
     private GameManager gm;
@@ -15,7 +17,24 @@ public class PlayerController : MonoBehaviour
         gm = GameManager.instance;
         moveSpeed = gm.playerMoveSpeed;
     }
-    void Update()
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Station") && gm.isPlaying)
+        {
+            gm.EndStage();
+        }
+    }
+
+    public void pointStation(bool locationFound){
+        stationPointer.SetActive(locationFound);       
+    }
+
+    public void UpdateStats(){
+        moveSpeed = gm.playerMoveSpeed;
+    }
+    void FixedUpdate()
     {
         if (gm.isPlaying)
         {
@@ -30,13 +49,8 @@ public class PlayerController : MonoBehaviour
         } else {
             shooter.transform.rotation = Quaternion.Euler(0,0,-0);
         }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Station") && gm.isPlaying)
-        {
-            gm.EndStage();
+        if(!gm.isPlaying && !gm.isCutScene){
+            playerRb.linearVelocity = playerRb.linearVelocity * Mathf.Lerp(1f, 0f, Time.fixedDeltaTime);
         }
     }
 }
