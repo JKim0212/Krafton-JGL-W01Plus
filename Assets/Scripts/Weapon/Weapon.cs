@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Weapon : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float damage, attackSpeed, projectileSpeed;
     protected Camera mainCam;
     protected GameManager gm;
-    [HideInInspector] public WeaponSlot weaponSlot;
+    public WeaponSlot weaponSlot;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected Transform shotPlace;
 
@@ -40,11 +41,15 @@ public class Weapon : MonoBehaviour
                 }
             }
         }
-
-
     }
     protected virtual void Shoot()
     {
 
+    }
+
+    protected IEnumerator ShootCo()
+    {
+        yield return new WaitForSeconds(attackSpeed);
+        inCoolDown = false;
     }
 }

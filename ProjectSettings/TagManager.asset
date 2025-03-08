@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Station
   - Enemy
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Game Objects
   - Water
   - UI
   - 
