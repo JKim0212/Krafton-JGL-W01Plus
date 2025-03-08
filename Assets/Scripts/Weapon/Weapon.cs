@@ -10,6 +10,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected Transform shotPlace;
     [SerializeField] int weaponCode;
+
+    private bool isShooting = false;
+    public bool IsShooting{
+        get{return isShooting;}
+        set{isShooting = value;}
+    }
     public int WeaponCode{
         get{return weaponCode;}
     }

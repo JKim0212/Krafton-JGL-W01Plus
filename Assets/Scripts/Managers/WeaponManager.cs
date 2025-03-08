@@ -6,6 +6,12 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField] GameObject left, right;
+    public GameObject Left{
+        get{return left;}
+    }
+    public GameObject Right{
+        get{return right;}
+    }
     private GameManager gm;
     [SerializeField] GameObject[] Weapons;
     public GameObject[] weaponIcons;

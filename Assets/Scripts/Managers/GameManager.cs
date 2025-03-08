@@ -62,12 +62,20 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
+                weap.Left.GetComponent<IWeapon>().IsShooting = true;
                 weap.Shoot(0);
+            } else {
+                weap.Left.GetComponent<IWeapon>().IsShooting = false;
             }
             if (Input.GetMouseButton(1))
             {
+                weap.Right.GetComponent<IWeapon>().IsShooting = true;
                 weap.Shoot(1);
+            } else {
+                weap.Right.GetComponent<IWeapon>().IsShooting = false;
             }
+            
+            
 
         }
 
