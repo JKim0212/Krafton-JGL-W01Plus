@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &263021469303860389
 Transform:
   m_ObjectHideFlags: 0
@@ -50,9 +50,9 @@ MonoBehaviour:
   damage: 0
   attackSpeed: 1
   projectileSpeed: 1
-  weaponSlot: 1
   projectile: {fileID: 3764154175139219896, guid: c2ab9cf230a26c3408563120480e8d49, type: 3}
   shotPlace: {fileID: 7607453474008716182}
+  weaponCode: 2
   indicator: {fileID: 8217398009278197183}
 --- !u!1 &7312522552670538495
 GameObject:

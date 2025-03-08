@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] UIManager ui;
     [SerializeField] StationController station;
-    [SerializeField] WeaponManager weap;
+    public WeaponManager weap;
     [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
     public bool isCutScene;
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         ui.Upgrade();
         player.SetActive(false);
+        weap.PrepareSlots();
         player.transform.position = station.transform.position;
     }
 
@@ -118,5 +119,8 @@ public class GameManager : MonoBehaviour
         locationFound = false;
     }
 
+    public void UpdateWeapon(int weaponCode, int slotNum){
+        weap.UpdateSlots(weaponCode, slotNum);
+    }
 
 }

@@ -1,21 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
-    public enum WeaponSlot
-    {
-        left,
-        right
-    }
-
     [SerializeField] protected float damage, attackSpeed, projectileSpeed;
     protected Camera mainCam;
     protected GameManager gm;
-    public WeaponSlot weaponSlot;
     [SerializeField] protected GameObject projectile;
     [SerializeField] protected Transform shotPlace;
-
+    [SerializeField] int weaponCode;
+    public int WeaponCode{
+        get{return weaponCode;}
+    }
     protected bool inCoolDown;
     void Start()
     {
@@ -45,7 +42,7 @@ public class Weapon : MonoBehaviour
     //     }
     // }
 
-    
+
     protected virtual IEnumerator ShootCo()
     {
         yield return new WaitForSeconds(attackSpeed);

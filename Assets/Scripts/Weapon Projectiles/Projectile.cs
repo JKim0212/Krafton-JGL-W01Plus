@@ -6,4 +6,9 @@ public class Projectile : MonoBehaviour
     public void Init(float damage){
         this.damage = damage;
     }
+
+    void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 }
