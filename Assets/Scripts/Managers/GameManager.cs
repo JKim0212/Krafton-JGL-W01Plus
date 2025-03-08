@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] UIManager ui;
     [SerializeField] StationController station;
-
+    [SerializeField] WeaponManager weap;
     [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
     public bool isCutScene;
@@ -59,6 +59,16 @@ public class GameManager : MonoBehaviour
             {
                 player.GetComponent<PlayerController>().pointStation(locationFound = true);
             }
+
+            if (Input.GetMouseButton(0))
+            {
+                weap.Shoot(0);
+            }
+            if (Input.GetMouseButton(1))
+            {
+                weap.Shoot(1);
+            }
+
         }
 
     }
@@ -80,10 +90,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartNextStage()
-    {   
+    {
         player.SetActive(true);
         player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
         player.GetComponent<PlayerController>().UpdateStats();
+        weap.UpdateStats();
         StartCoroutine(CutScene());
     }
 

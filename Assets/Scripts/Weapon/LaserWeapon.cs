@@ -2,10 +2,10 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class LaserWeapon : Weapon
+public class LaserWeapon : Weapon, IWeapon
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Shoot(){
+    public void Shoot(){
         if (!inCoolDown)
         {
             inCoolDown = true;
@@ -33,5 +33,10 @@ public class LaserWeapon : Weapon
     IEnumerator DestroyLaser(GameObject laser){
         yield return new WaitForSeconds(projectileSpeed);
         Destroy(laser);
+    }
+
+    public void UpdateStats(float damModifier)
+    {
+        damage *= damModifier;
     }
 }

@@ -1,22 +1,34 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
-public class BasicShotWeapon : Weapon, IWeapon
+public class MissileWeapon : Weapon, IWeapon
 {
+    [SerializeField] SpriteRenderer indicator;
+    
     public void Shoot()
     {
         if (!inCoolDown)
         {
+            indicator.color = Color.red;
             inCoolDown = true;
             Vector3 targetPos = mainCam.ScreenToWorldPoint(Input.mousePosition);
             Vector3 direction = targetPos - shotPlace.position;
             direction.z = 0f;
-            GameObject shot = Instantiate(projectile, shotPlace.position, Quaternion.identity);
-            shot.GetComponent<BasicShot>().Init(damage);
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            GameObject shot = Instantiate(projectile, shotPlace.position, Quaternion.Euler(0, 0, angle));
+
+            shot.GetComponent<MissileProjectile>().Init(damage);
             shot.GetComponent<Rigidbody2D>().linearVelocity = direction.normalized * projectileSpeed + direction.normalized * gm.player.GetComponent<Rigidbody2D>().linearVelocity.magnitude;
             StartCoroutine(ShootCo());
         }
+    }
 
+    protected override IEnumerator ShootCo(){
+        yield return new WaitForSeconds(attackSpeed);
+        indicator.color = Color.green;
+        inCoolDown = false;
     }
 
     public void UpdateStats(float damModifier)

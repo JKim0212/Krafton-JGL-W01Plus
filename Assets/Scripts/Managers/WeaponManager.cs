@@ -14,9 +14,13 @@ public class WeaponManager : MonoBehaviour
         switch (pos)
         {
             case 0:
+                left.transform.SetParent(null);
+                left.SetActive(false);
                 left = weapon;
                 break;
             case 1:
+                right.transform.SetParent(null);
+                right.SetActive(false);
                 right = weapon;
                 break;
             default:
@@ -42,5 +46,18 @@ public class WeaponManager : MonoBehaviour
             right.transform.SetParent(gm.rightWeapon);
         }
 
+    }
+
+    public void Shoot(int slot){
+        if(slot == 0){
+            left.GetComponent<IWeapon>().Shoot();
+        } else if(slot == 1){
+            right.GetComponent<IWeapon>().Shoot();
+        }
+    }
+    public void UpdateStats()
+    {
+        left.GetComponent<IWeapon>().UpdateStats(gm.attackDamage);
+        right.GetComponent<IWeapon>().UpdateStats(gm.attackDamage);
     }
 }

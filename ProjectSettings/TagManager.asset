@@ -44,6 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Projectile
+    uniqueID: 944329421
+    locked: 0
   - name: Weapon
     uniqueID: 3757871337
     locked: 0

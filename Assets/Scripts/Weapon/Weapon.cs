@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
         left,
         right
     }
+
     [SerializeField] protected float damage, attackSpeed, projectileSpeed;
     protected Camera mainCam;
     protected GameManager gm;
@@ -20,34 +21,32 @@ public class Weapon : MonoBehaviour
     {
         gm = GameManager.instance;
         mainCam = Camera.main;
+        damage *= gm.attackDamage;
     }
 
-    void Update()
-    {
-        if (gm.isPlaying)
-        {
-            if (weaponSlot == WeaponSlot.left)
-            {
-                if (Input.GetMouseButton(0))
-                {
-                    Shoot();
-                }
-            }
-            if (weaponSlot == WeaponSlot.right)
-            {
-                if (Input.GetMouseButton(1))
-                {
-                    Shoot();
-                }
-            }
-        }
-    }
-    protected virtual void Shoot()
-    {
+    // void Update()
+    // {
+    //     if (gm.isPlaying)
+    //     {
+    //         if (weaponSlot == WeaponSlot.left)
+    //         {
+    //             if (Input.GetMouseButton(0))
+    //             {
+    //                 Shoot();
+    //             }
+    //         }
+    //         if (weaponSlot == WeaponSlot.right)
+    //         {
+    //             if (Input.GetMouseButton(1))
+    //             {
+    //                 Shoot();
+    //             }
+    //         }
+    //     }
+    // }
 
-    }
-
-    protected IEnumerator ShootCo()
+    
+    protected virtual IEnumerator ShootCo()
     {
         yield return new WaitForSeconds(attackSpeed);
         inCoolDown = false;
