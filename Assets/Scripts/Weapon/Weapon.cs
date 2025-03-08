@@ -21,27 +21,6 @@ public class Weapon : MonoBehaviour
         damage *= gm.attackDamage;
     }
 
-    // void Update()
-    // {
-    //     if (gm.isPlaying)
-    //     {
-    //         if (weaponSlot == WeaponSlot.left)
-    //         {
-    //             if (Input.GetMouseButton(0))
-    //             {
-    //                 Shoot();
-    //             }
-    //         }
-    //         if (weaponSlot == WeaponSlot.right)
-    //         {
-    //             if (Input.GetMouseButton(1))
-    //             {
-    //                 Shoot();
-    //             }
-    //         }
-    //     }
-    // }
-
 
     protected virtual IEnumerator ShootCo()
     {

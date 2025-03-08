@@ -7,6 +7,9 @@ TagManager:
   - Station
   - Enemy
   - Obstacle
+  - Enemy Projectile
+  - Missile Projectile
+  - Player Projectile
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - Game Objects
   - Water
   - UI
-  - 
+  - Projectile
   - 
   - 
   - 
