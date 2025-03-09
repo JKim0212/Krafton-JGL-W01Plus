@@ -546,6 +546,6 @@ CompositeCollider2D:
       - {x: -1.0029708, y: -0.43}
       - {x: -0.4314937, y: -0.4300141}
   m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
+  m_OffsetDistance: 0
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 4759673762182348096}
