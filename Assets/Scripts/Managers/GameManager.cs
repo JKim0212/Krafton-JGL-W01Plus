@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] StationController station;
     public WeaponManager weap;
 
-    [SerializeField] private SpawnManager sp;
+    [SerializeField] SpawnManager sp;
+    [SerializeField] MapManager map_m;
 
     [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
         player.GetComponent<PlayerController>().UpdateStats();
         weap.UpdateStats();
+        map_m.GenerateObstacles(100);
         StartCoroutine(CutScene());
     }
 

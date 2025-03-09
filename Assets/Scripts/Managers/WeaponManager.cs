@@ -25,7 +25,7 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-                equippedCodes = new int[] { left.GetComponent<IWeapon>().WeaponCode, right.GetComponent<IWeapon>().WeaponCode };
+        equippedCodes = new int[] { left.GetComponent<IWeapon>().WeaponCode, right.GetComponent<IWeapon>().WeaponCode };
     }
     public void Shoot(int slot)
     {

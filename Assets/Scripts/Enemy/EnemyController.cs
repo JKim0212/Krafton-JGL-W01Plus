@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] float attackRange;
     protected bool inRange;
+
+
     void Start()
     {
         gm = GameManager.instance;
