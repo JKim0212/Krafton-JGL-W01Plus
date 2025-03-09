@@ -13,32 +13,38 @@ public class MissileProjectile : Projectile
     }
     void Update()
     {
-        if(Vector3.Distance(transform.position, targetPos) <= 0.1f){
+        if (Vector3.Distance(transform.position, targetPos) <= 0.1f)
+        {
             Explode();
         }
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle")){
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle"))
+        {
             Explode();
-            }
+        }
     }
     //Explode and damage all enemy in area
-    void Explode(){
+    void Explode()
+    {
         sprite.SetActive(false);
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         explosionEffect.SetActive(true);
-        RaycastHit2D[] Targets =Physics2D.CircleCastAll(transform.position, explosionRadius, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Game Objects"));
-        
-        foreach(RaycastHit2D hit in Targets){
-            Debug.Log(hit.collider.gameObject.name);
-            if(hit.collider.gameObject.CompareTag("Enemy")){
+        RaycastHit2D[] Targets = Physics2D.CircleCastAll(transform.position, explosionRadius, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Game Objects"));
+
+        foreach (RaycastHit2D hit in Targets)
+        {
+            if (hit.collider.gameObject.CompareTag("Enemy"))
+            {
                 hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
             }
         }
         StartCoroutine(ExplosionCo());
     }
 
-    IEnumerator ExplosionCo(){
+    IEnumerator ExplosionCo()
+    {
         yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
     }

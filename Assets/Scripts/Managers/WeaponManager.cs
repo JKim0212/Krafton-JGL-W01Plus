@@ -6,11 +6,13 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField] GameObject left, right;
-    public GameObject Left{
-        get{return left;}
+    public GameObject Left
+    {
+        get { return left; }
     }
-    public GameObject Right{
-        get{return right;}
+    public GameObject Right
+    {
+        get { return right; }
     }
     private GameManager gm;
     [SerializeField] GameObject[] Weapons;
@@ -23,8 +25,7 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         gm = GameManager.instance;
-        Debug.Log(left.name);
-        equippedCodes = new int[] { left.GetComponent<IWeapon>().WeaponCode, right.GetComponent<IWeapon>().WeaponCode };
+                equippedCodes = new int[] { left.GetComponent<IWeapon>().WeaponCode, right.GetComponent<IWeapon>().WeaponCode };
     }
     public void Shoot(int slot)
     {
@@ -60,7 +61,6 @@ public class WeaponManager : MonoBehaviour
 
         for (int i = 2; i < slots.Count(); i++)
         {
-            Debug.Log("inactive Weapons " + inactiveWeapons.Count.ToString());
             if (inactiveWeapons.Count == 0)
             {
                 break;
@@ -74,7 +74,6 @@ public class WeaponManager : MonoBehaviour
             weaponIcons[choiceCode].GetComponent<WeaponIcon>().Changed = false;
             weaponIcons[choiceCode].GetComponent<WeaponIcon>().setParentTransform();
             inactiveWeapons.RemoveAt(inactiveCode);
-            Debug.Log("inactive Weapons " + inactiveWeapons.Count.ToString());
         }
     }
     public void UpdateStats()
