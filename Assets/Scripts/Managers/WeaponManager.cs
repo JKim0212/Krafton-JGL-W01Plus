@@ -58,7 +58,7 @@ public class WeaponManager : MonoBehaviour
         weaponIcons[equippedCodes[1]].GetComponent<WeaponIcon>().Changed = true;
         weaponIcons[equippedCodes[1]].GetComponent<WeaponIcon>().setParentTransform();
 
-        for (int i = 2; i < slots.Count() - 1; i++)
+        for (int i = 2; i < slots.Count(); i++)
         {
             Debug.Log("inactive Weapons " + inactiveWeapons.Count.ToString());
             if (inactiveWeapons.Count == 0)
