@@ -28,7 +28,11 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
             isBouncing = true;
-            playerRb.AddForce(-playerRb.linearVelocity * 1.5F, ForceMode2D.Impulse);
+            playerRb.AddForce(-playerRb.linearVelocity * 1.5f, ForceMode2D.Impulse);
+            StartCoroutine(Bounce());
+        } else if(collision.gameObject.CompareTag("Boss")){
+            isBouncing = true;
+            playerRb.AddForce(-playerRb.linearVelocity * 3.5f, ForceMode2D.Impulse);
             StartCoroutine(Bounce());
         }
     }
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Bounce()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         isBouncing = false;
     }
 }

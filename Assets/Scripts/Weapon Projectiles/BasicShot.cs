@@ -10,6 +10,9 @@ public class BasicShot : Projectile
             Destroy(gameObject);
         } else if(collision.CompareTag("Obstacle")){
             Destroy(gameObject);
+        } else if(collision.gameObject.CompareTag("Boss")){
+            collision.gameObject.GetComponent<BossController>().DamageToBoss(damage);
+            Destroy(gameObject);
         }
     }
 }

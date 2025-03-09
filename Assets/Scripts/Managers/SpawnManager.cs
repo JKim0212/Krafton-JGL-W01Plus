@@ -3,30 +3,33 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] float spawnInterval = 0.5f;
+    float spawnInterval = 0.5f;
+    public float SpawnInterval { private get; set; }
     bool spawnCooldown = false;
     [SerializeField] GameObject[] enemiesToSpawn;
-    private float[] spawnProb = new float[] { 33, 66 };
+    float[] spawnProb = { 33, 66 };
+    public float[] SpawnProb { private get; set; }
+
     public void Spawn()
     {
-        if (!spawnCooldown)
-        {
-            float rand = Random.Range(0, 100f);
-            if (rand <= spawnProb[0])
-            {
-                Instantiate(enemiesToSpawn[0], GetRandomPosition(), Quaternion.identity);
-            }
-            else if (rand >= spawnProb[0] && rand <= spawnProb[1])
-            {
-                Instantiate(enemiesToSpawn[1], GetRandomPosition(), Quaternion.identity);
-            }
-            else
-            {
-                Instantiate(enemiesToSpawn[2], GetRandomPosition(), Quaternion.identity);
-            }
-            spawnCooldown = true;
-            StartCoroutine(SpawnCo());
-        }
+        // if (!spawnCooldown)
+        // {
+        //     float rand = Random.Range(0, 100f);
+        //     if (rand <= spawnProb[0])
+        //     {
+        //         Instantiate(enemiesToSpawn[0], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+        //     }
+        //     else if (rand >= spawnProb[0] && rand <= spawnProb[1])
+        //     {
+        //         Instantiate(enemiesToSpawn[1], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+        //     }
+        //     else
+        //     {
+        //         Instantiate(enemiesToSpawn[2], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+        //     }
+        //     spawnCooldown = true;
+        //     StartCoroutine(SpawnCo());
+        // }
 
     }
 

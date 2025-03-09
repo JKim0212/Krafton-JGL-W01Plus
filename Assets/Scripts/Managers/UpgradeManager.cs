@@ -23,8 +23,8 @@ public class UpgradeManager : MonoBehaviour
     }
     public void UpgradeStats(string code)
     {
-        if(gm.money >= upgradePrice[code]){
-            gm.money -= upgradePrice[code];
+        if(gm.Money >= upgradePrice[code]){
+            gm.Money -= upgradePrice[code];
             if(!code.Equals("Repair")){
                 upgradePrice[code] += priceChange;
             }

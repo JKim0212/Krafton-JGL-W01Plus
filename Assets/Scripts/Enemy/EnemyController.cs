@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -12,8 +11,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] protected float health = 10f;
     [SerializeField] protected float moveSpeed = 5f;
     [SerializeField] protected float collisionDamage = 1f;
-
-    [SerializeField] float attackRange;
+    [SerializeField] int money = 5;
+    [SerializeField] float attackRange = 5f;
     protected bool inRange;
 
 
@@ -57,6 +56,7 @@ public class EnemyController : MonoBehaviour
         health -= damageAmount;
         if(health <= 0f){
             Destroy(gameObject);
+            gm.Money += money;
         }
     }
 }

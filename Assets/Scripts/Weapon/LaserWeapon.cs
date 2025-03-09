@@ -24,7 +24,13 @@ public class LaserWeapon : Weapon, IWeapon
                     targetPos = hit.point;
                     break;
                 }
-                hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
+                if (hit.collider.gameObject.CompareTag("Enemy"))
+                {
+                    hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
+                } else if (hit.collider.gameObject.CompareTag("Boss")){
+                    hit.collider.GetComponent<BossController>().DamageToBoss(damage);
+                }
+
             }
             GameObject laser = Instantiate(projectile, shotPlace.position, Quaternion.identity);
             laser.GetComponent<LineRenderer>().SetPositions(new Vector3[] { shotPlace.position, targetPos });

@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Stat")]
     public float health;
     public float curHealth;
-    public int money;
+    private int money;
+    public int Money{get;set;}
     public float playerMoveSpeed;
     public float attackSpeed;
     public float attackDamage;
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] UIManager ui;
     [SerializeField] StationController station;
     public WeaponManager weap;
-
+    public PoolManager pool;
     [SerializeField] SpawnManager sp;
     [SerializeField] MapManager map_m;
 
@@ -32,11 +33,13 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Progress")]
-    [SerializeField] int stageNum;
-    public bool isPlaying;
+    int stageNum = 0;
+    public bool isPlaying = false;
     [SerializeField] float stationAppearTime;
     private float time;
     private bool locationFound = false;
+    [SerializeField] LevelData[] levels;
+
     void Awake()
     {
         if (instance == null)
@@ -52,6 +55,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         curHealth = health;
+        time = 0f;
+        StartGame();
     }
 
     void Update()
@@ -68,48 +73,73 @@ public class GameManager : MonoBehaviour
             {
                 weap.Left.GetComponent<IWeapon>().IsShooting = true;
                 weap.Shoot(0);
-            } else {
+            }
+            else
+            {
                 weap.Left.GetComponent<IWeapon>().IsShooting = false;
             }
             if (Input.GetMouseButton(1))
             {
                 weap.Right.GetComponent<IWeapon>().IsShooting = true;
                 weap.Shoot(1);
-            } else {
+            }
+            else
+            {
                 weap.Right.GetComponent<IWeapon>().IsShooting = false;
             }
-            
+
             sp.Spawn();
 
         }
 
     }
+    private void StartGame(){
+        sp.SpawnInterval = levels[stageNum].SpawnInterval;
+        sp.SpawnProb = levels[stageNum].SpawnRate;
+        map_m.GenerateObstacles(levels[stageNum].NumObstacles);
+        locationFound = false;
+        isPlaying = true;
+        station.Spawn();
+        stageNum += 1;
+    }
     public void EndStage()
     {
-        player.GetComponent<PlayerController>().pointStation(locationFound = false);
-        isPlaying = false;
-        blackBar.SetActive(true);
-        StartCoroutine(EndStageCo());
+        if (stageNum < levels.Length - 1)
+        {
+            player.GetComponent<PlayerController>().pointStation(locationFound = false);
+            isPlaying = false;
+            blackBar.SetActive(true);
+            StartCoroutine(EndStageCo());
+        } else{
+            isPlaying = false;
+            Debug.Log("clear");
+        }
+
     }
 
     IEnumerator EndStageCo()
     {
-
+        for(int i = 0; i <pool.transform.childCount; i++){
+            pool.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        map_m.RemoveAllObstacle();
         yield return new WaitForSeconds(1.5f);
         ui.Upgrade();
-        player.SetActive(false);
         weap.PrepareSlots();
         player.transform.position = station.transform.position;
     }
 
     public void StartNextStage()
     {
-        player.SetActive(true);
+        sp.SpawnInterval = levels[stageNum].SpawnInterval;
+        sp.SpawnProb = levels[stageNum].SpawnRate;
+        map_m.GenerateObstacles(levels[stageNum].NumObstacles);
         player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
         player.GetComponent<PlayerController>().UpdateStats();
         weap.UpdateStats();
         map_m.GenerateObstacles(100);
         StartCoroutine(CutScene());
+        stageNum += 1;
     }
 
     IEnumerator CutScene()
@@ -123,7 +153,7 @@ public class GameManager : MonoBehaviour
     IEnumerator EndCutScene()
     {
         isCutScene = false;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         station.Spawn();
         blackBar.SetActive(false);
         isPlaying = true;
@@ -132,15 +162,21 @@ public class GameManager : MonoBehaviour
         locationFound = false;
     }
 
-    public void UpdateWeapon(int weaponCode, int slotNum){
+    public void UpdateWeapon(int weaponCode, int slotNum)
+    {
         weap.UpdateSlots(weaponCode, slotNum);
     }
 
 
     //Combat system
 
-    public void DamagePlayer(float damageToPlayer){
+    public void DamagePlayer(float damageToPlayer)
+    {
         curHealth -= damageToPlayer;
+        if (curHealth <= 0)
+        {
+            Destroy(player);
+        }
     }
 
 }

@@ -20,7 +20,7 @@ public class MissileProjectile : Projectile
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle"))
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Boss"))
         {
             Explode();
         }
@@ -38,6 +38,8 @@ public class MissileProjectile : Projectile
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
+            } else if(hit.collider.gameObject.CompareTag("Boss")){
+                hit.collider.GetComponent<BossController>().DamageToBoss(damage);
             }
         }
         StartCoroutine(ExplosionCo());
@@ -45,7 +47,7 @@ public class MissileProjectile : Projectile
 
     IEnumerator ExplosionCo()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.55f);
         Destroy(gameObject);
     }
 }
