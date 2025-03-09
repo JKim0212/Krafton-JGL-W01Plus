@@ -10,6 +10,7 @@ TagManager:
   - Enemy Projectile
   - Missile Projectile
   - Player Projectile
+  - Area
   layers:
   - Default
   - TransparentFX

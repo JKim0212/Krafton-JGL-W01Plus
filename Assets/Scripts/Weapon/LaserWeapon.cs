@@ -14,16 +14,17 @@ public class LaserWeapon : Weapon, IWeapon
             targetPos.z = 0f;
             Vector2 shootDir = targetPos - shotPlace.position;
 
+            //Damage all enemy that the laser hits.
+            //Blocked when hitting obstacle
             RaycastHit2D[] hits = Physics2D.RaycastAll(shotPlace.position, shootDir, Mathf.Infinity, LayerMask.GetMask("Game Objects"));
             foreach (RaycastHit2D hit in hits.OrderBy(x => x.distance))
             {
-
                 if (hit.collider.gameObject.CompareTag("Obstacle"))
                 {
                     targetPos = hit.point;
                     break;
                 }
-                Destroy(hit.collider.gameObject);
+                hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
             }
             GameObject laser = Instantiate(projectile, shotPlace.position, Quaternion.identity);
             laser.GetComponent<LineRenderer>().SetPositions(new Vector3[] { shotPlace.position, targetPos });

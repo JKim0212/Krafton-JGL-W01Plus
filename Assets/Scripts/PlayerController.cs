@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,9 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject shooter;
     [SerializeField] GameObject stationPointer;
     [SerializeField] Camera mainCam;
-    // Update is called once per frame
     private GameManager gm;
-
+    private bool isBouncing;
     void Start()
     {
         gm = GameManager.instance;
@@ -24,6 +23,11 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Station") && gm.isPlaying)
         {
             gm.EndStage();
+            playerRb.linearVelocity = Vector2.zero;
+        }else if(collision.gameObject.CompareTag("Obstacle")){
+            isBouncing = true;
+            playerRb.AddForce(-playerRb.linearVelocity*1.5F, ForceMode2D.Impulse);
+            StartCoroutine(Bounce());
         }
     }
 
@@ -36,10 +40,10 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (gm.isPlaying)
+        if (gm.isPlaying && !isBouncing)
         {
             Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
-            transform.Translate(moveDir.normalized * moveSpeed * Time.deltaTime);
+            playerRb.linearVelocity = moveDir.normalized * moveSpeed;
 
             Vector3 mousePos = Input.mousePosition;
             Vector3 worldPos = mainCam.WorldToScreenPoint(transform.localPosition);
@@ -50,7 +54,13 @@ public class PlayerController : MonoBehaviour
             shooter.transform.rotation = Quaternion.Euler(0,0,-0);
         }
         if(!gm.isPlaying && !gm.isCutScene){
-            playerRb.linearVelocity = playerRb.linearVelocity * Mathf.Lerp(1f, 0f, Time.fixedDeltaTime);
+            playerRb.linearVelocity  *= Mathf.Lerp(1f, 0f, Time.fixedDeltaTime);
         }
+    }
+
+    
+    IEnumerator Bounce(){
+        yield return new WaitForSeconds(0.5f);
+        isBouncing = false;
     }
 }

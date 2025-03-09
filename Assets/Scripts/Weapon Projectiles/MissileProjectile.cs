@@ -11,13 +11,19 @@ public class MissileProjectile : Projectile
         explosionEffect.transform.localScale = Vector3.one * explosionRadius;
         sprite = transform.Find("Sprite").gameObject;
     }
+    void Update()
+    {
+        if(Vector3.Distance(transform.position, targetPos) <= 0.1f){
+            Explode();
+        }
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Enemy") || collision.CompareTag("Obstacle")){
+        if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Obstacle")){
             Explode();
             }
     }
-
+    //Explode and damage all enemy in area
     void Explode(){
         sprite.SetActive(false);
         explosionEffect.SetActive(true);
@@ -26,7 +32,7 @@ public class MissileProjectile : Projectile
         foreach(RaycastHit2D hit in Targets){
             Debug.Log(hit.collider.gameObject.name);
             if(hit.collider.gameObject.CompareTag("Enemy")){
-                Destroy(hit.collider.gameObject);
+                hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
             }
         }
         StartCoroutine(ExplosionCo());

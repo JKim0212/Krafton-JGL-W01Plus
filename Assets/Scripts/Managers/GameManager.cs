@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Stat")]
     public float health;
-    [HideInInspector] public float curHealth;
+    public float curHealth;
     public int money;
     public float playerMoveSpeed;
     public float attackSpeed;
@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] UIManager ui;
     [SerializeField] StationController station;
     public WeaponManager weap;
+
+    [SerializeField] private SpawnManager sp;
+
     [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
     public bool isCutScene;
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
                 weap.Right.GetComponent<IWeapon>().IsShooting = false;
             }
             
-            
+            sp.Spawn();
 
         }
 
@@ -129,6 +132,13 @@ public class GameManager : MonoBehaviour
 
     public void UpdateWeapon(int weaponCode, int slotNum){
         weap.UpdateSlots(weaponCode, slotNum);
+    }
+
+
+    //Combat system
+
+    public void DamagePlayer(float damageToPlayer){
+        curHealth -= damageToPlayer;
     }
 
 }

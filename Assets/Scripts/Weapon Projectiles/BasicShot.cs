@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class BasicShot : Projectile
 {
+    //Damage and disappear on hit
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Enemy")){
-            Destroy(collision.gameObject);
+        if(collision.gameObject.CompareTag("Enemy")){
+            collision.gameObject.GetComponent<EnemyController>().DamageToEnemy(damage);
             Destroy(gameObject);
         } else if(collision.CompareTag("Obstacle")){
             Destroy(gameObject);
