@@ -30,8 +30,9 @@ public class APSWeapon : Weapon, IWeapon
         yield return new WaitForSeconds(projectileSpeed);
         Destroy(laser);
     }
-    public void UpdateStats(float damModifier)
+    public void UpdateStats(float damModifier, float speedModifier)
     {
-        damage *= damModifier;
+        currentDamage = damage*damModifier;
+        currentAttackSpeed = attackSpeed * speedModifier;
     }
 }

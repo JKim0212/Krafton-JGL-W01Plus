@@ -7,6 +7,6 @@ public interface IWeapon
         set;
     }
     public int WeaponCode{get;}
-    void UpdateStats(float damModifier);
+    void UpdateStats(float damModifier, float speedModifier);
     void Shoot();
 }

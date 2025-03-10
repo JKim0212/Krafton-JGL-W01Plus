@@ -78,8 +78,8 @@ public class WeaponManager : MonoBehaviour
     }
     public void UpdateStats()
     {
-        left.GetComponent<IWeapon>().UpdateStats(gm.attackDamage);
-        right.GetComponent<IWeapon>().UpdateStats(gm.attackDamage);
+        left.GetComponent<IWeapon>().UpdateStats(gm.attackDamage, gm.attackSpeed);
+        right.GetComponent<IWeapon>().UpdateStats(gm.attackDamage, gm.attackSpeed);
     }
 
     public void UpdateSlots(int weaponCode, int slotNum)

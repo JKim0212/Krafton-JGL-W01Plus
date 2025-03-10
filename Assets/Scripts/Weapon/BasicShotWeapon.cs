@@ -12,15 +12,16 @@ public class BasicShotWeapon : Weapon, IWeapon
             Vector3 direction = targetPos - shotPlace.position;
             direction.z = 0f;
             GameObject shot = Instantiate(projectile, shotPlace.position, Quaternion.identity);
-            shot.GetComponent<BasicShot>().Init(damage, targetPos);
+            shot.GetComponent<BasicShot>().Init(currentDamage, targetPos);
             shot.GetComponent<Rigidbody2D>().linearVelocity = direction.normalized * projectileSpeed + direction.normalized * gm.player.GetComponent<Rigidbody2D>().linearVelocity.magnitude;
             StartCoroutine(ShootCo());
         }
 
     }
 
-    public void UpdateStats(float damModifier)
+    public void UpdateStats(float damModifier,float speedModifier)
     {
-        damage *= damModifier;
+        currentDamage = damage*damModifier;
+        currentAttackSpeed = attackSpeed*speedModifier;
     }
 }

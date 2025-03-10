@@ -36,8 +36,9 @@ public class FlameThrowerWeapon : Weapon, IWeapon
     {
         projectile.SetActive(IsShooting);
     }
-    public void UpdateStats(float damModifier)
+    public void UpdateStats(float damModifier, float speedModifier)
     {
-        damage *= damModifier;
+        currentDamage = damage*damModifier;
+        currentAttackSpeed = attackSpeed * speedModifier;
     }
 }

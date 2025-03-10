@@ -1,8 +1,13 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class WeaponIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class WeaponIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static GameObject draggedIcon;
+    [SerializeField] GameObject weaponDescriptionBox;
+    [SerializeField] TextMeshProUGUI descriptionText;
+    [TextArea]
+    [SerializeField] string weaponDescription;
     public int weaponCode;
     Vector3 startPos;
     private Transform onDragParent;
@@ -58,4 +63,15 @@ public class WeaponIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void setParentTransform(){
         onDragParent = transform.parent.GetComponent<RectTransform>();
     }
+
+    public void OnPointerEnter(PointerEventData eventData){
+        weaponDescriptionBox.transform.position = transform.position;
+        descriptionText.text = weaponDescription;
+        weaponDescriptionBox.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData){
+        weaponDescriptionBox.SetActive(true);
+    }
+    
 }

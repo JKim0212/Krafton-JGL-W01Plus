@@ -1,4 +1,5 @@
 using System.Collections;
+
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -8,28 +9,28 @@ public class SpawnManager : MonoBehaviour
     bool spawnCooldown = false;
     [SerializeField] GameObject[] enemiesToSpawn;
     float[] spawnProb = { 33, 66 };
-    public float[] SpawnProb { private get; set; }
+    public float[] SpawnProb { private get{return spawnProb;} set{spawnProb = value;} }
 
     public void Spawn()
     {
-        // if (!spawnCooldown)
-        // {
-        //     float rand = Random.Range(0, 100f);
-        //     if (rand <= spawnProb[0])
-        //     {
-        //         Instantiate(enemiesToSpawn[0], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
-        //     }
-        //     else if (rand >= spawnProb[0] && rand <= spawnProb[1])
-        //     {
-        //         Instantiate(enemiesToSpawn[1], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
-        //     }
-        //     else
-        //     {
-        //         Instantiate(enemiesToSpawn[2], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
-        //     }
-        //     spawnCooldown = true;
-        //     StartCoroutine(SpawnCo());
-        // }
+        if (GameManager.instance.isPlaying && !spawnCooldown)
+        {
+            float rand = Random.Range(0, 100f);
+            if (rand <= spawnProb[0])
+            {
+                Instantiate(enemiesToSpawn[0], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+            }
+            else if (rand > spawnProb[0] && rand <= spawnProb[1])
+            {
+                Instantiate(enemiesToSpawn[1], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+            }
+            else
+            {
+                Instantiate(enemiesToSpawn[2], GetRandomPosition(), Quaternion.identity, GameManager.instance.pool.gameObject.transform);
+            }
+            spawnCooldown = true;
+            StartCoroutine(SpawnCo());
+        }
 
     }
 

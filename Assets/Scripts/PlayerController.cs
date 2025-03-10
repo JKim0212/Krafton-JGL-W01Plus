@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Rigidbody2D playerRb;
     [SerializeField] GameObject shooter;
     [SerializeField] GameObject stationPointer;
+    public GameObject StationPointer{
+        get{return stationPointer;}
+        set{stationPointer = value;}
+    }
     [SerializeField] Camera mainCam;
     private GameManager gm;
     private bool isBouncing;

@@ -28,7 +28,7 @@ public class WeaponSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPo
         }
         else
         {
-            if (WeaponIcon.draggedIcon != null)
+            if (WeaponIcon.draggedIcon != null && !GameManager.instance.weap.changed[slotNum])
             {
                 GameObject oldWeapon = Icon();
                 oldWeapon.transform.SetParent(GameManager.instance.weap.iconSlot);

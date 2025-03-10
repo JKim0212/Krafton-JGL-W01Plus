@@ -9,7 +9,8 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] int[] initialCosts;
     [SerializeField] float[] upgradeAmounts;
     [SerializeField] string[] upgradeNames;
-    [SerializeField] Dictionary<string, int> upgradePrice = new Dictionary<string, int>();
+    Dictionary<string, int> upgradePrice = new Dictionary<string, int>();
+    Dictionary<string, int> upgradelevel = new Dictionary<string, int>();
     [SerializeField] int priceChange;
     private GameManager gm;
 
@@ -19,33 +20,61 @@ public class UpgradeManager : MonoBehaviour
         for (int i = 0; i < initialCosts.Length; i++)
         {
             upgradePrice[upgradeNames[i]] = initialCosts[i];
+            upgradelevel[upgradeNames[i]] = 0;
+        }
+        for(int i = 0; i < initialCosts.Length - 1; i++){
+
         }
     }
     public void UpgradeStats(string code)
     {
-        if(gm.Money >= upgradePrice[code]){
-            gm.Money -= upgradePrice[code];
-            if(!code.Equals("Repair")){
-                upgradePrice[code] += priceChange;
-            }
-            switch(code){
+        if (gm.Money >= upgradePrice[code] && upgradelevel[code] <= 5)
+        {
+
+
+            switch (code)
+            {
                 case "Health":
-                gm.health += upgradeAmounts[0];
-                gm.curHealth += upgradeAmounts[0];
-                break;
+                    gm.Money -= upgradePrice[code];
+                    gm.health += upgradeAmounts[0];
+                    gm.curHealth += upgradeAmounts[0];
+                    upgradePrice[code] += priceChange;
+                    upgradelevel[code] += 1;
+                    gm.ui.UpdateUpgrade(code, upgradePrice[code], upgradelevel[code]);
+                    break;
                 case "Attack Speed":
-                gm.attackSpeed *= upgradeAmounts[1];
-                break;
+                    gm.Money -= upgradePrice[code];
+                    gm.attackSpeed *= upgradeAmounts[1];
+                    upgradePrice[code] += priceChange;
+                    upgradelevel[code] += 1;
+                    gm.ui.UpdateUpgrade(code, upgradePrice[code], upgradelevel[code]);
+                    break;
                 case "Attack Damage":
-                gm.attackDamage *= upgradeAmounts[2];
-                break;
+                    gm.Money -= upgradePrice[code];
+                    gm.attackDamage *= upgradeAmounts[2];
+                    upgradePrice[code] += priceChange;
+                    upgradelevel[code] += 1;
+                    gm.ui.UpdateUpgrade(code, upgradePrice[code], upgradelevel[code]);
+                    break;
                 case "Move Speed":
-                gm.playerMoveSpeed *= upgradeAmounts[3];
-                break;
+                    gm.Money -= upgradePrice[code];
+                    gm.playerMoveSpeed *= upgradeAmounts[3];
+                    upgradePrice[code] += priceChange;
+                    upgradelevel[code] += 1;
+                    gm.ui.UpdateUpgrade(code, upgradePrice[code], upgradelevel[code]);
+                    break;
                 case "Repair":
-                gm.curHealth += upgradeAmounts[4];
-                break;
+                    if (!(gm.curHealth == gm.health))
+                    {
+                        gm.Money -= upgradePrice[code];
+                        gm.curHealth += upgradeAmounts[4];
+                        if (gm.curHealth >= gm.health) gm.curHealth = gm.health;
+                    }
+
+                    break;
             }
+            gm.ui.UpdateHealth();
+            gm.ui.UpdateMoney();
         }
     }
 }

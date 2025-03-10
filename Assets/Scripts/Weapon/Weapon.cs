@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] protected float damage, attackSpeed, projectileSpeed;
+    [SerializeField] protected float damage, attackSpeed, projectileSpeed, currentDamage, currentAttackSpeed;
     protected Camera mainCam;
     protected GameManager gm;
     [SerializeField] protected GameObject projectile;
@@ -24,13 +24,14 @@ public class Weapon : MonoBehaviour
     {
         gm = GameManager.instance;
         mainCam = Camera.main;
-        damage *= gm.attackDamage;
+        currentDamage = damage * gm.attackDamage;
+        currentAttackSpeed = attackSpeed * gm.attackSpeed;
     }
 
 
     protected virtual IEnumerator ShootCo()
     {
-        yield return new WaitForSeconds(attackSpeed);
+        yield return new WaitForSeconds(currentAttackSpeed);
         inCoolDown = false;
     }
 }

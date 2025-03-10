@@ -8,8 +8,10 @@ public class MissileProjectile : Projectile
     GameObject sprite;
     void Start()
     {
-        explosionEffect.transform.localScale = Vector3.one * explosionRadius;
         sprite = transform.Find("Sprite").gameObject;
+        ParticleSystem explosion = explosionEffect.GetComponent<ParticleSystem>();
+        ParticleSystem.ShapeModule shape = explosion.shape;
+        shape.radius = explosionRadius;
     }
     void Update()
     {
@@ -38,7 +40,9 @@ public class MissileProjectile : Projectile
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 hit.collider.GetComponent<EnemyController>().DamageToEnemy(damage);
-            } else if(hit.collider.gameObject.CompareTag("Boss")){
+            }
+            else if (hit.collider.gameObject.CompareTag("Boss"))
+            {
                 hit.collider.GetComponent<BossController>().DamageToBoss(damage);
             }
         }

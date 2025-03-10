@@ -6,26 +6,28 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("Player")]
-    public GameObject player;
+    public GameObject player, boss;
     public Transform leftWeapon, rightWeapon;
 
     [Header("Game Stat")]
     public float health;
     public float curHealth;
     private int money;
-    public int Money{get;set;}
+    public int Money { get { return money; } set { money = value; } }
     public float playerMoveSpeed;
     public float attackSpeed;
     public float attackDamage;
-    public float stationDistance;
+    public float stationDistance, bossSpawnDistance;
 
     [Header("Managers")]
-    [SerializeField] UIManager ui;
+    public UIManager ui;
     [SerializeField] StationController station;
     public WeaponManager weap;
     public PoolManager pool;
     [SerializeField] SpawnManager sp;
     [SerializeField] MapManager map_m;
+    [SerializeField] TutoManager tuto;
+    public TutoManager Tuto => tuto;
 
     [Header("Cut Scene")]
     [SerializeField] GameObject blackBar;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Progress")]
     int stageNum = 0;
+    public int StageNum => stageNum;
     public bool isPlaying = false;
     [SerializeField] float stationAppearTime;
     private float time;
@@ -56,7 +59,6 @@ public class GameManager : MonoBehaviour
     {
         curHealth = health;
         time = 0f;
-        StartGame();
     }
 
     void Update()
@@ -64,8 +66,13 @@ public class GameManager : MonoBehaviour
         if (isPlaying)
         {
             time += Time.deltaTime;
+            ui.UpdateTimer(time);
             if (time >= stationAppearTime && !locationFound)
             {
+                if (stageNum == 0)
+                {
+                    tuto.ShowTuto(2);
+                }
                 player.GetComponent<PlayerController>().pointStation(locationFound = true);
             }
 
@@ -93,33 +100,33 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    private void StartGame(){
+    public void StartGame()
+    {
         sp.SpawnInterval = levels[stageNum].SpawnInterval;
         sp.SpawnProb = levels[stageNum].SpawnRate;
         map_m.GenerateObstacles(levels[stageNum].NumObstacles);
         locationFound = false;
         isPlaying = true;
         station.Spawn();
-        stageNum += 1;
+        weap.UpdateStats();
+        player.GetComponent<PlayerController>().UpdateStats();
+        tuto.ShowTuto(0);
     }
     public void EndStage()
     {
-        if (stageNum < levels.Length - 1)
+        if (stageNum < levels.Length)
         {
             player.GetComponent<PlayerController>().pointStation(locationFound = false);
             isPlaying = false;
             blackBar.SetActive(true);
             StartCoroutine(EndStageCo());
-        } else{
-            isPlaying = false;
-            Debug.Log("clear");
         }
-
     }
 
     IEnumerator EndStageCo()
     {
-        for(int i = 0; i <pool.transform.childCount; i++){
+        for (int i = 0; i < pool.transform.childCount; i++)
+        {
             pool.transform.GetChild(i).gameObject.SetActive(false);
         }
         map_m.RemoveAllObstacle();
@@ -127,19 +134,25 @@ public class GameManager : MonoBehaviour
         ui.Upgrade();
         weap.PrepareSlots();
         player.transform.position = station.transform.position;
+
     }
 
     public void StartNextStage()
     {
-        sp.SpawnInterval = levels[stageNum].SpawnInterval;
-        sp.SpawnProb = levels[stageNum].SpawnRate;
-        map_m.GenerateObstacles(levels[stageNum].NumObstacles);
-        player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
-        player.GetComponent<PlayerController>().UpdateStats();
-        weap.UpdateStats();
-        map_m.GenerateObstacles(100);
-        StartCoroutine(CutScene());
         stageNum += 1;
+        if (stageNum < levels.Length)
+        {
+            sp.SpawnInterval = levels[stageNum].SpawnInterval;
+            sp.SpawnProb = levels[stageNum].SpawnRate;
+            map_m.GenerateObstacles(levels[stageNum].NumObstacles);
+            player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.right * 10;
+            player.GetComponent<PlayerController>().UpdateStats();
+            weap.UpdateStats();
+            StartCoroutine(CutScene());
+        }
+
+
+
     }
 
     IEnumerator CutScene()
@@ -160,23 +173,54 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerController>().playerRb.linearVelocity = Vector3.zero;
         time = 0f;
         locationFound = false;
+        if (stageNum == levels.Length - 1)
+        {
+            StartFinalStage();
+        }
     }
 
+    void StartFinalStage()
+    {
+        float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        Vector3 delta = new Vector3(Mathf.Cos(angle) * bossSpawnDistance, Mathf.Sin(angle) * bossSpawnDistance, 0f);
+        boss.transform.position = player.transform.position + delta;
+        boss.SetActive(true);
+    }
     public void UpdateWeapon(int weaponCode, int slotNum)
     {
         weap.UpdateSlots(weaponCode, slotNum);
     }
 
+    public void EndGame(bool isWin)
+    {
+        isPlaying = false;
+        StartCoroutine(EndCo(isWin));
+    }
+
+    IEnumerator EndCo(bool isWin)
+    {
+        yield return new WaitForSeconds(1.5f);
+        for (int i = 0; i < pool.transform.childCount; i++)
+        {
+            pool.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        yield return new WaitForSeconds(0.5f);
+        ui.EndGame(isWin);
+    }
 
     //Combat system
 
     public void DamagePlayer(float damageToPlayer)
     {
         curHealth -= damageToPlayer;
+        ui.UpdateHealth();
         if (curHealth <= 0)
         {
             Destroy(player);
+            EndGame(false);
         }
     }
+
+
 
 }

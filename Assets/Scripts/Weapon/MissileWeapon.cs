@@ -31,8 +31,9 @@ public class MissileWeapon : Weapon, IWeapon
         inCoolDown = false;
     }
 
-    public void UpdateStats(float damModifier)
+    public void UpdateStats(float damModifier, float speedModifier)
     {
-        damage *= damModifier;
+        currentDamage = damage*damModifier;
+        currentAttackSpeed = speedModifier*attackSpeed;
     }
 }

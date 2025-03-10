@@ -17,4 +17,4 @@ MonoBehaviour:
   - 40
   - 90
   spawnInterval: 0.5
-  numObstacles: 50
+  numObstacles: 7

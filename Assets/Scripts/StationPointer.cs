@@ -4,6 +4,10 @@ using UnityEngine;
 public class StationPointer : MonoBehaviour
 {
     [SerializeField] Transform station;
+    public Transform Station{
+        get{return station;}
+        set{station = value;}
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Update()

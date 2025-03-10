@@ -57,6 +57,7 @@ public class EnemyController : MonoBehaviour
         if(health <= 0f){
             Destroy(gameObject);
             gm.Money += money;
+            gm.ui.UpdateMoney();
         }
     }
 }

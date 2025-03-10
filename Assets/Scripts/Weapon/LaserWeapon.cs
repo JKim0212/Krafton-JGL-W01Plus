@@ -45,8 +45,9 @@ public class LaserWeapon : Weapon, IWeapon
         Destroy(laser);
     }
 
-    public void UpdateStats(float damModifier)
+    public void UpdateStats(float damModifier, float speedModifier)
     {
-        damage *= damModifier;
+        currentDamage = damage*damModifier;
+        currentAttackSpeed = attackSpeed*speedModifier;
     }
 }

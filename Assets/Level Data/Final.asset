@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageName: Final Stage
   spawnRate:
-  - 20
-  - 60
+  - 10
+  - 50
   spawnInterval: 0.2
-  numObstacles: 0
+  numObstacles: 5
