@@ -22,7 +22,7 @@ public class UpgradeManager : MonoBehaviour
             upgradePrice[upgradeNames[i]] = initialCosts[i];
             upgradelevel[upgradeNames[i]] = 0;
         }
-        for(int i = 0; i < initialCosts.Length - 1; i++){
+        for(int i = 0; i < initialCosts.Length; i++){
             gm.ui.UpdateUpgrade(upgradeNames[i], upgradePrice[upgradeNames[i]], upgradelevel[upgradeNames[i]] );
         }
     }
