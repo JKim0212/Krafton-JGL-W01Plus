@@ -10,7 +10,7 @@ public class APSWeapon : Weapon, IWeapon
         if (!inCoolDown)
         {
             {
-                RaycastHit2D hit = Physics2D.CircleCast(gm.player.transform.position, 2f, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Projectile"));
+                RaycastHit2D hit = Physics2D.CircleCast(gm.player.transform.position, 2.5f, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Projectile"));
                 if (hit)
                 {
                     inCoolDown = true;

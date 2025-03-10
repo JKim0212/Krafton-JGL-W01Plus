@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
 public class BossController : MonoBehaviour
 {
     protected GameObject player;
+    [SerializeField] GameObject hitEffect;
     protected GameManager gm;
     protected Rigidbody2D rb;
 
@@ -29,6 +29,8 @@ public class BossController : MonoBehaviour
 
     bool isShootingLaser = false;
     [SerializeField] float gravityTime;
+
+    [SerializeField] GameObject death, sprites;
     void Start()
     {
         gm = GameManager.instance;
@@ -169,11 +171,19 @@ public class BossController : MonoBehaviour
 
     public void DamageToBoss(float damageAmount)
     {
+        Instantiate(hitEffect, transform.position, Quaternion.identity);
         health -= damageAmount;
         if (health <= 0f)
         {
-            Destroy(gameObject);
+            StartCoroutine(DeathExplode());
             gm.EndGame(true);
         }
+    }
+
+    IEnumerator DeathExplode(){
+        death.SetActive(true);
+        sprites.SetActive(false);
+        yield return new WaitForSeconds(0.8f);
+        Destroy(gameObject);
     }
 }

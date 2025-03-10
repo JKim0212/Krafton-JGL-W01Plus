@@ -217,6 +217,7 @@ MonoBehaviour:
   collisionDamage: 1
   money: 7
   attackRange: 10
+  hitEffect: {fileID: 7063589349807717706, guid: b783bd3c423f3d94eaf7411ae3b6ad61, type: 3}
   projectile: {fileID: 7380230090710589927, guid: 9da7c4e522541cf469d53b618fa0d2c1, type: 3}
   damage: 2
   attackSpeed: 0.3

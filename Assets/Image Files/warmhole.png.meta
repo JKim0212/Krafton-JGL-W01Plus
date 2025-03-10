@@ -159,7 +159,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      warmhole_0: 3542041539085727447
+      warmhole_1: -3154950343313244486
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

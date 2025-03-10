@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
         set{stationPointer = value;}
     }
     [SerializeField] Camera mainCam;
+    
     private GameManager gm;
     private bool isBouncing;
     void Start()

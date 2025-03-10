@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public enum Panel
@@ -74,6 +75,7 @@ public class UIManager : MonoBehaviour
     public void NextStage()
     {
         upgradePanel.SetActive(true);
+        activePanel = Panel.Upgrade;
         weaponPanel.SetActive(false);
         stationPanel.SetActive(false);
         playPanel.SetActive(true);
@@ -112,6 +114,8 @@ public class UIManager : MonoBehaviour
     {
         healthSlider.value = gm.curHealth;
         upgradeHealthSlider.value = gm.curHealth;
+        healthSlider.maxValue = gm.health;
+        upgradeHealthSlider.maxValue = gm.health;
         healthText.text = "Health : " + gm.curHealth;
     }
 
@@ -149,5 +153,10 @@ public class UIManager : MonoBehaviour
                 break;
 
         }
+    }
+
+    public void Restart(){
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 }

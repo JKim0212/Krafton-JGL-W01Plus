@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] int money = 5;
     [SerializeField] float attackRange = 5f;
     protected bool inRange;
-
+[SerializeField] GameObject hitEffect;
 
     void Start()
     {
@@ -53,6 +53,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public void DamageToEnemy(float damageAmount){
+        Instantiate(hitEffect,transform.position, Quaternion.identity);
         health -= damageAmount;
         if(health <= 0f){
             Destroy(gameObject);

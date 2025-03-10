@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    [SerializeField] CameraControl vc;
     [Header("Player")]
-    public GameObject player, boss;
+    public GameObject player, boss, deathEffect, bloodScreen;
     public Transform leftWeapon, rightWeapon;
 
     [Header("Game Stat")]
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < pool.transform.childCount; i++)
         {
-            pool.transform.GetChild(i).gameObject.SetActive(false);
+            Destroy(pool.transform.GetChild(i).gameObject);
         }
         map_m.RemoveAllObstacle();
         yield return new WaitForSeconds(1.5f);
@@ -140,6 +142,7 @@ public class GameManager : MonoBehaviour
     public void StartNextStage()
     {
         stageNum += 1;
+        weap.ResetSlots();
         if (stageNum < levels.Length)
         {
             sp.SpawnInterval = levels[stageNum].SpawnInterval;
@@ -183,6 +186,8 @@ public class GameManager : MonoBehaviour
     {
         float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
         Vector3 delta = new Vector3(Mathf.Cos(angle) * bossSpawnDistance, Mathf.Sin(angle) * bossSpawnDistance, 0f);
+        player.GetComponent<PlayerController>().StationPointer.GetComponent<StationPointer>().Station = boss;
+        station.gameObject.SetActive(false);
         boss.transform.position = player.transform.position + delta;
         boss.SetActive(true);
     }
@@ -202,7 +207,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         for (int i = 0; i < pool.transform.childCount; i++)
         {
-            pool.transform.GetChild(i).gameObject.SetActive(false);
+            Destroy(pool.transform.GetChild(i).gameObject);
         }
         yield return new WaitForSeconds(0.5f);
         ui.EndGame(isWin);
@@ -213,12 +218,24 @@ public class GameManager : MonoBehaviour
     public void DamagePlayer(float damageToPlayer)
     {
         curHealth -= damageToPlayer;
+        vc.ShakeCamera();
+        bloodScreen.SetActive(true);
+        StartCoroutine(Shaking());
         ui.UpdateHealth();
         if (curHealth <= 0)
         {
+            Instantiate(deathEffect, player.transform.position, Quaternion.identity);
+            curHealth = 0f;
             Destroy(player);
             EndGame(false);
         }
+    }
+
+    IEnumerator Shaking()
+    {
+        yield return new WaitForSeconds(0.5f);
+        vc.StopCameraShake();
+        bloodScreen.SetActive(false);
     }
 
 

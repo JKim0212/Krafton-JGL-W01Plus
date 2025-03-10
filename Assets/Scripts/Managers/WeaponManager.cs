@@ -128,4 +128,13 @@ public class WeaponManager : MonoBehaviour
         }
 
     }
+
+    public void ResetSlots(){
+        for(int i = 2; i < 5; i++){
+            foreach(Transform t in slots[i]){
+                inactiveWeapons.Add(t.gameObject.GetComponent<WeaponIcon>().weaponCode);
+                t.SetParent(iconSlot);
+            }
+        }
+    }
 }

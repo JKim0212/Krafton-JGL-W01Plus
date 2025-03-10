@@ -103,6 +103,7 @@ MonoBehaviour:
   collisionDamage: 3
   money: 3
   attackRange: 0
+  hitEffect: {fileID: 7063589349807717706, guid: b783bd3c423f3d94eaf7411ae3b6ad61, type: 3}
 --- !u!50 &3741993475788945796
 Rigidbody2D:
   serializedVersion: 5

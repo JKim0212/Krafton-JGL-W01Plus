@@ -23,12 +23,12 @@ public class UpgradeManager : MonoBehaviour
             upgradelevel[upgradeNames[i]] = 0;
         }
         for(int i = 0; i < initialCosts.Length - 1; i++){
-
+            gm.ui.UpdateUpgrade(upgradeNames[i], upgradePrice[upgradeNames[i]], upgradelevel[upgradeNames[i]] );
         }
     }
     public void UpgradeStats(string code)
     {
-        if (gm.Money >= upgradePrice[code] && upgradelevel[code] <= 5)
+        if (gm.Money >= upgradePrice[code] && upgradelevel[code] < 5)
         {
 
 
@@ -69,6 +69,7 @@ public class UpgradeManager : MonoBehaviour
                         gm.Money -= upgradePrice[code];
                         gm.curHealth += upgradeAmounts[4];
                         if (gm.curHealth >= gm.health) gm.curHealth = gm.health;
+                        gm.ui.UpdateUpgrade(code, upgradePrice[code], upgradelevel[code]);
                     }
 
                     break;

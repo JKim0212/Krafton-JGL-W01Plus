@@ -15,6 +15,6 @@ MonoBehaviour:
   stageName: Level 1
   spawnRate:
   - 40
-  - 90
-  spawnInterval: 0.5
-  numObstacles: 7
+  - 80
+  spawnInterval: 0.7
+  numObstacles: 15

@@ -16,5 +16,5 @@ MonoBehaviour:
   spawnRate:
   - 10
   - 50
-  spawnInterval: 0.2
-  numObstacles: 5
+  spawnInterval: 0.65
+  numObstacles: 7

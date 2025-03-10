@@ -19,7 +19,7 @@ public class MapManager : MonoBehaviour
         {
             Vector3 spawnPos = m.position + new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), 0);
             GameObject spawned = Instantiate(obstacle, spawnPos, Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360f))), m);
-            if(Vector3.Distance(spawnPos, GameManager.instance.player.transform.position) <= 20){
+            if(Vector3.Distance(spawnPos, GameManager.instance.player.transform.position) <= 30){
                 Destroy(spawned);
             }
 
